@@ -1657,6 +1657,11 @@
         </entry>
       </map>
     </option>
+    <option name="modificationStamps">
+      <map>
+        <entry key="$PROJECT_DIR$" value="4526601156000" />
+      </map>
+    </option>
     <option name="projectBuildClasspath">
       <map>
         <entry key="$PROJECT_DIR$">
@@ -2016,6 +2021,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/guijet/tp2_android/Tools/ScreenTools/ManualUI.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/guijet/tp2_android/Tools/ScreenTools/PageStarter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/guijet/tp2_android/Tools/TextHelper/FlowTextHelper.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/guijet/tp2_android/Activity2/SecondActivity.java" />
       </list>
     </option>
   </component>
