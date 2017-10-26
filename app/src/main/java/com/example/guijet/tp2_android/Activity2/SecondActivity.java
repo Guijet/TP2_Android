@@ -29,6 +29,7 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
 
     Boolean isUsername = true;
     TextView Username;
+    EditText TB_SendMsg;
     String adresseName,port,username,adresseMulticast;
     RecyclerView recyclerView;
     List<Message> listMessage;
@@ -48,6 +49,8 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
 
         //Page Set Ups
         setUpHeader(ui);
+        setRecyclerView(ui);
+        setUpBottom(ui);
 
     }
 
@@ -84,27 +87,40 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         ui.addView(switchUsername);
     }
 
-    private void setRecyclerView(){
-
+    private void setRecyclerView(ManualUI ui){
+        recyclerView = new RecyclerView(this);
+        recyclerView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        ui.setPosition(recyclerView,0,ui.rh(106),ui.rw(375),ui.rh(667) - (ui.rh(106) + ui.rh(80)));
+        ui.addView(recyclerView);
     }
 
     private void setUpBottom(ManualUI ui){
         View bottomView = new View(this);
         bottomView.setBackgroundColor(Color.parseColor("#E5E5E5"));
         bottomView.setId(R.id.BottomView);
-        ui.setPosition(bottomView,0,ui.rh(608),ui.rw(375),ui.rh(59));
+        ui.setPosition(bottomView,0,ui.rh(587),ui.rw(375),ui.rh(80));
         ui.addView(bottomView);
 
-        EditText TB_SendMsg = new EditText(this);
+        TB_SendMsg = new EditText(this);
         TB_SendMsg.setId(R.id.TB_SendMessage);
-        TB_SendMsg.setHint("Pseudonyme");
-        TB_SendMsg.setHintTextColor(Color.parseColor("#FFFFFF"));
-        TB_SendMsg.setTextColor(Color.parseColor("#FFFFFF"));
+        TB_SendMsg.setHint("Enter message here...");
+        TB_SendMsg.setHintTextColor(Color.parseColor("#000000"));
+        TB_SendMsg.setTextColor(Color.parseColor("#000000"));
         TB_SendMsg.setAllCaps(false);
-        TB_SendMsg.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        TB_SendMsg.getBackground().mutate().setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_ATOP);
-        ui.setPosition(TB_SendMsg,ui.rw(53),ui.rh(362),ui.rw(263),ui.rh(45));
+        TB_SendMsg.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+        TB_SendMsg.setBackgroundColor(Color.TRANSPARENT);
+        //TB_SendMsg.getBackground().mutate().setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_ATOP);
+        ui.setPosition(TB_SendMsg,ui.rw(15),ui.rh(593),ui.rw(280),ui.rh(45));
         ui.addView(TB_SendMsg);
+
+        ImageButton sendButton = new ImageButton(this);
+        sendButton.setImageResource(R.drawable.send);
+        sendButton.setOnClickListener(this);
+        sendButton.setBackgroundColor(Color.TRANSPARENT);
+        sendButton.setId(R.id.BTN_Send);
+        sendButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ui.setPosition(sendButton,ui.rw(326),ui.rh(600),ui.rw(40),ui.rh(40));
+        ui.addView(sendButton);
     }
 
     private void getInfoFromLastActivity(){
@@ -144,6 +160,19 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         if(view.getId() == R.id.SwitchButton){
             //Changer les noms des user par le ip
             changeIpFromUsername();
+        }
+
+        if(view.getId() == R.id.BTN_Send){
+            //Verify characters limits
+            if(TB_SendMsg.getText().toString().length() > 1 || TB_SendMsg.getText().toString().length() < 64){
+                //SEND MESSAGE
+                //EMPTY EditText
+                //Add message in recycler view
+            }
+            else{
+                Toast.makeText(this,"Message mut be beetween 1 and 64 characters",Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 }
