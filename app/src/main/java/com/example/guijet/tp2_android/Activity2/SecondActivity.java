@@ -2,17 +2,20 @@ package com.example.guijet.tp2_android.Activity2;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.guijet.tp2_android.Classes.Message;
+import com.example.guijet.tp2_android.Classes.User;
 import com.example.guijet.tp2_android.R;
 import com.example.guijet.tp2_android.Tools.Fonts.ModifyFonts;
 import com.example.guijet.tp2_android.Tools.ScreenTools.ManualUI;
@@ -46,14 +49,13 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         //Page Set Ups
         setUpHeader(ui);
 
-        Toast.makeText(this,adresseName + ": " + adresseMulticast,Toast.LENGTH_SHORT).show();
     }
 
     private void fillFakeMessages(){
         listMessage = new ArrayList<Message>();
-        listMessage.add(new Message("Ce message est un test pour recycler view","Jonathan Bouchard",false));
-        listMessage.add(new Message("Deuxieme message de Jonathan","Jonathan Bouchard",false));
-        listMessage.add(new Message("Ma reponse a mousieur bouchard","Guillaume Jetté",true));
+        listMessage.add(new Message("Ce message est un test pour recycler view",new User("Jonathan","124.123.123"),false));
+        listMessage.add(new Message("Deuxieme message de Jonathan",new User("Guillaume","123.453.1234"),false));
+        listMessage.add(new Message("Ma reponse a mousieur bouchard",new User("Charles","234.234.216"),true));
     }
 
     private void setUpHeader(ManualUI ui){
@@ -86,6 +88,25 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    private void setUpBottom(ManualUI ui){
+        View bottomView = new View(this);
+        bottomView.setBackgroundColor(Color.parseColor("#E5E5E5"));
+        bottomView.setId(R.id.BottomView);
+        ui.setPosition(bottomView,0,ui.rh(608),ui.rw(375),ui.rh(59));
+        ui.addView(bottomView);
+
+        EditText TB_SendMsg = new EditText(this);
+        TB_SendMsg.setId(R.id.TB_SendMessage);
+        TB_SendMsg.setHint("Pseudonyme");
+        TB_SendMsg.setHintTextColor(Color.parseColor("#FFFFFF"));
+        TB_SendMsg.setTextColor(Color.parseColor("#FFFFFF"));
+        TB_SendMsg.setAllCaps(false);
+        TB_SendMsg.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        TB_SendMsg.getBackground().mutate().setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_ATOP);
+        ui.setPosition(TB_SendMsg,ui.rw(53),ui.rh(362),ui.rw(263),ui.rh(45));
+        ui.addView(TB_SendMsg);
+    }
+
     private void getInfoFromLastActivity(){
         Intent intent = getIntent();
         adresseName = intent.getStringExtra("AdresseName");
@@ -107,10 +128,22 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    private void changeIpFromUsername(){
+        if(isUsername) {
+            //Mettre les ips adresse
+            isUsername = false;
+        }
+        else{
+            //Mettre les usernames
+            isUsername = true;
+        }
+    }
+
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.SwitchButton){
-            changeTopText();
+            //Changer les noms des user par le ip
+            changeIpFromUsername();
         }
     }
 }

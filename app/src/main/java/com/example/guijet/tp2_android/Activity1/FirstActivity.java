@@ -12,6 +12,7 @@ import android.graphics.drawable.shapes.RectShape;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -107,7 +108,9 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
 
         TB_PortUDP = new EditText(this);
         TB_PortUDP.setHint("Port UDP");
+        TB_PortUDP.setInputType(InputType.TYPE_CLASS_NUMBER);
         TB_PortUDP.setId(R.id.TB_Port);
+        TB_PortUDP.setText("6000");
         TB_PortUDP.setHintTextColor(Color.parseColor("#FFFFFF"));
         TB_PortUDP.setTextColor(Color.parseColor("#FFFFFF"));
         TB_PortUDP.setAllCaps(false);
@@ -178,27 +181,32 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
         ui.addView(startButton);
     }
 
-    private boolean verifyEntries(){
-        return !(TB_Adresse.getText().toString().equals("") && TB_PortUDP.getText().toString().equals("") && TB_Pseudonyme.getText().toString().equals(""));
+    private void goToNextActivity(){
+        if(!TB_Adresse.getText().toString().equals("") && !TB_PortUDP.getText().toString().equals("") && !TB_Pseudonyme.getText().toString().equals("")){
+            if(!(TB_Pseudonyme.getText().toString().length() < 2) && !(TB_Pseudonyme.getText().toString().length() > 8)){
+
+                //Passer a l'autre page
+                Intent myIntent = new Intent(FirstActivity.this, SecondActivity.class);
+                myIntent.putExtra("Username", TB_Pseudonyme.getText().toString());
+                myIntent.putExtra("Port", TB_PortUDP.getText().toString());
+                myIntent.putExtra("AdresseName", TB_Adresse.getText().toString());
+                myIntent.putExtra("AdresseMulticast", getAdresseByName(TB_Adresse.getText().toString()));
+                FirstActivity.this.startActivity(myIntent);
+            }
+            else{
+                Toast.makeText(this,"Username must be beetween 2 and 8 characters",Toast.LENGTH_LONG).show();
+            }
+        }
+        else{
+            Toast.makeText(this,"You need to fill all fields",Toast.LENGTH_LONG).show();
+        }
+
     }
 
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.ButtonStart){
-            if(verifyEntries()){
-                //Passer a l'autre page
-                Intent myIntent = new Intent(FirstActivity.this, SecondActivity.class);
-
-                myIntent.putExtra("Username", TB_Pseudonyme.getText().toString());
-                myIntent.putExtra("Port", TB_PortUDP.getText().toString());
-                myIntent.putExtra("AdresseName", TB_Adresse.getText().toString());
-                myIntent.putExtra("AdresseMulticast", getAdresseByName(TB_Adresse.getText().toString()));
-
-                FirstActivity.this.startActivity(myIntent);
-            }
-            else{
-                Toast.makeText(this,"All fields need to be fill",Toast.LENGTH_SHORT).show();
-            }
+            goToNextActivity();
         }
         else if(view.getId() == R.id.TB_Adresse){
             setUpWheelPicker();
