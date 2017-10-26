@@ -7,12 +7,12 @@ package com.example.guijet.tp2_android.Classes;
 public class Message {
 
     private String message;
-    private String username;
+    private User user;
     private Boolean isSender;
 
-    public Message(String message, String username, Boolean isSender){
+    public Message(String message, User user, Boolean isSender){
         this.message = message;
-        this.username = username;
+        this.user = user;
         this.isSender = isSender;
     }
 
@@ -24,7 +24,7 @@ public class Message {
         return isSender;
     }
 
-    public String getUsername() {
-        return username;
+    public User getUser() {
+        return user;
     }
 }
