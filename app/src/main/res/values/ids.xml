@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="TB_Adresse" />
+    <item type="id" name="TB_Port" />
+    <item type="id" name="TB_Username" />
+    <item type="id" name="ButtonStart" />
+
+    <item type="id" name="Username" />
+    <item type="id" name="SwitchButton" />
+</resources>
