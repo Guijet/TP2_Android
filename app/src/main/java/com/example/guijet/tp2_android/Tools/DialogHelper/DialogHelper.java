@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.aigestudio.wheelpicker.WheelPicker;
+import com.example.guijet.tp2_android.Classes.AdresseMultiCast;
 import com.example.guijet.tp2_android.R;
 import com.example.guijet.tp2_android.Tools.LogicalCode.Command;
 
