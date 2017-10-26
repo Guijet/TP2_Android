@@ -8,9 +8,9 @@ public class Message {
 
     private String message;
     private User user;
-    private Boolean isSender;
+    private Integer isSender;
 
-    public Message(String message, User user, Boolean isSender){
+    public Message(String message, User user, Integer isSender){
         this.message = message;
         this.user = user;
         this.isSender = isSender;
@@ -20,7 +20,7 @@ public class Message {
         return message;
     }
 
-    public Boolean getSender() {
+    public Integer getSender() {
         return isSender;
     }
 
