@@ -1,5 +1,6 @@
 package com.example.guijet.tp2_android.Activity1;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -31,6 +33,7 @@ import com.example.guijet.tp2_android.R;
 import com.example.guijet.tp2_android.Tools.DialogHelper.DialogHelper;
 import com.example.guijet.tp2_android.Tools.Fonts.ModifyFonts;
 import com.example.guijet.tp2_android.Tools.LogicalCode.Command;
+import com.example.guijet.tp2_android.Tools.ScreenTools.Focus;
 import com.example.guijet.tp2_android.Tools.ScreenTools.ManualUI;
 
 import org.w3c.dom.Text;
@@ -47,7 +50,7 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         //Array adresses
         instantiateArrayAdress();
 
@@ -113,7 +116,6 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
         TB_PortUDP.setText("6000");
         TB_PortUDP.setHintTextColor(Color.parseColor("#FFFFFF"));
         TB_PortUDP.setTextColor(Color.parseColor("#FFFFFF"));
-        TB_PortUDP.setAllCaps(false);
         TB_PortUDP.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         TB_PortUDP.getBackground().mutate().setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
         ui.setPosition(TB_PortUDP,ui.rw(53),ui.rh(298),ui.rw(263),ui.rh(45));
@@ -125,7 +127,6 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
         TB_Pseudonyme.setHint("Pseudonyme");
         TB_Pseudonyme.setHintTextColor(Color.parseColor("#FFFFFF"));
         TB_Pseudonyme.setTextColor(Color.parseColor("#FFFFFF"));
-        TB_Pseudonyme.setAllCaps(false);
         TB_Pseudonyme.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         TB_Pseudonyme.getBackground().mutate().setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
         ui.setPosition(TB_Pseudonyme,ui.rw(53),ui.rh(362),ui.rw(263),ui.rh(45));
@@ -210,6 +211,10 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
         }
         else if(view.getId() == R.id.TB_Adresse){
             setUpWheelPicker();
+        }
+        else if(view.getId() == R.id.TB_Username){
+            Focus focus = new Focus();
+            focus.request(this,TB_Pseudonyme);
         }
     }
 
