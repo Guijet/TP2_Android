@@ -32,6 +32,7 @@ import com.example.guijet.tp2_android.Tools.DialogHelper.DialogHelper;
 import com.example.guijet.tp2_android.Tools.Fonts.ModifyFonts;
 import com.example.guijet.tp2_android.Tools.LogicalCode.Command;
 import com.example.guijet.tp2_android.Tools.ScreenTools.ManualUI;
+import com.example.guijet.tp2_android.Tools.ScreenTools.PageStarter;
 
 import org.w3c.dom.Text;
 
@@ -41,7 +42,7 @@ import java.util.List;
 
 public class FirstActivity extends AppCompatActivity implements View.OnClickListener{
 
-    EditText TB_Adresse,TB_PortUDP,TB_Pseudonyme;
+    private EditText TB_Adresse,TB_PortUDP,TB_Pseudonyme;
     private List<AdresseMultiCast> listAdresse;
 
     @Override
@@ -145,8 +146,10 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
     private String getAdresseByName(String name){
         String adresseMulti = "";
         for (AdresseMultiCast adresse: listAdresse) {
-            if(name.equals(adresse.getName()))
+            if(name.equals(adresse.getName())) {
                 adresseMulti = adresse.getAdresse();
+                break;
+            }
         }
         return adresseMulti;
     }
@@ -159,8 +162,7 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
         return listName;
     }
 
-    private void setButton(ManualUI ui){
-
+    private void setButton(ManualUI ui) {
         GradientDrawable gdDefault = new GradientDrawable();
         gdDefault.setColor(Color.parseColor("#FFFFFF"));
         gdDefault.setCornerRadius(ui.rw(157)/2);
@@ -176,41 +178,44 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
         startButton.setTextColor(Color.parseColor("#000000"));
         startButton.setTextSize(TypedValue.COMPLEX_UNIT_PX,ui.rw(46));
         startButton.setBackgroundDrawable(gdDefault);
+
         ModifyFonts.SetLightToButtons(this,startButton);
         ui.setPosition(startButton,ui.rw(109),ui.rh(478),ui.rw(157),ui.rh(157));
         ui.addView(startButton);
     }
 
     private void goToNextActivity(){
-        if(!TB_Adresse.getText().toString().equals("") && !TB_PortUDP.getText().toString().equals("") && !TB_Pseudonyme.getText().toString().equals("")){
+        if(!TB_Adresse.getText().toString().isEmpty() && !TB_PortUDP.getText().toString().isEmpty() && !TB_Pseudonyme.getText().toString().isEmpty()) {
             if(!(TB_Pseudonyme.getText().toString().length() < 2) && !(TB_Pseudonyme.getText().toString().length() > 8)){
-
                 //Passer a l'autre page
                 Intent myIntent = new Intent(FirstActivity.this, SecondActivity.class);
                 myIntent.putExtra("Username", TB_Pseudonyme.getText().toString());
                 myIntent.putExtra("Port", TB_PortUDP.getText().toString());
                 myIntent.putExtra("AdresseName", TB_Adresse.getText().toString());
                 myIntent.putExtra("AdresseMulticast", getAdresseByName(TB_Adresse.getText().toString()));
-                FirstActivity.this.startActivity(myIntent);
+                PageStarter.startActivityEnter(this,myIntent);
             }
-            else{
+            else
                 Toast.makeText(this,"Username must be beetween 2 and 8 characters",Toast.LENGTH_LONG).show();
-            }
         }
-        else{
+        else
             Toast.makeText(this,"You need to fill all fields",Toast.LENGTH_LONG).show();
-        }
-
     }
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.ButtonStart){
-            goToNextActivity();
-        }
-        else if(view.getId() == R.id.TB_Adresse){
-            setUpWheelPicker();
+        switch (view.getId()) {
+            case R.id.ButtonStart:
+                goToNextActivity();
+                break;
+            case R.id.TB_Adresse:
+                setUpWheelPicker();
+                break;
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        PageStarter.finish(this);
+    }
 }

@@ -6,25 +6,37 @@ package com.example.guijet.tp2_android.Classes;
 
 public class Message {
 
-    private String message;
+    private String content;
     private User user;
-    private Boolean isSender;
+    private Integer isSender;
 
-    public Message(String message, User user, Boolean isSender){
-        this.message = message;
+    public Message(String content, User user, Integer isSender){
+        this.content = content;
         this.user = user;
         this.isSender = isSender;
     }
 
-    public String getMessage() {
-        return message;
+    public String getContent() {
+        return content;
     }
 
-    public Boolean getSender() {
+    public Integer getSender() {
         return isSender;
     }
 
     public User getUser() {
         return user;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setIsSender(Integer isSender) {
+        this.isSender = isSender;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

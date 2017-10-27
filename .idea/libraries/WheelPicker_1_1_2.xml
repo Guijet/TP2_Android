@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="WheelPicker-1.1.2">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/9c0aa5391ab8586cfdda5c2b5d00a18a807307d0/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/9c0aa5391ab8586cfdda5c2b5d00a18a807307d0/output/res" />
+      <root url="file://$USER_HOME$/.android/build-cache/1b14f817e73071c300f4b6f042aa90668bfc9f1b/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/1b14f817e73071c300f4b6f042aa90668bfc9f1b/output/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
