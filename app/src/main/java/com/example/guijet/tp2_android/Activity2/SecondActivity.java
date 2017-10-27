@@ -3,21 +3,29 @@ package com.example.guijet.tp2_android.Activity2;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.guijet.tp2_android.Classes.ChatAdapter;
 import com.example.guijet.tp2_android.Classes.Message;
+import com.example.guijet.tp2_android.Classes.UdpObject;
 import com.example.guijet.tp2_android.Classes.User;
+import com.example.guijet.tp2_android.Communication.Emetteur;
+import com.example.guijet.tp2_android.Communication.Recepteur;
 import com.example.guijet.tp2_android.R;
 import com.example.guijet.tp2_android.Tools.Fonts.ModifyFonts;
+import com.example.guijet.tp2_android.Tools.ScreenTools.Focus;
 import com.example.guijet.tp2_android.Tools.ScreenTools.ManualUI;
 
 import org.w3c.dom.Text;
@@ -31,14 +39,19 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
     TextView Username;
     EditText TB_SendMsg;
     String adresseName,port,username,adresseMulticast;
-    RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
+    public static List<Message> messages;
+    public static ChatAdapter adapter;
     List<Message> listMessage;
+    private UdpObject udpObject;
+    private Recepteur recepteur;
+    private Emetteur emetteur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Get info last Activity
-        fillFakeMessages();
+        //fillFakeMessages();
         getInfoFromLastActivity();
 
         //Seting Up Maunal UI
@@ -52,13 +65,23 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         setRecyclerView(ui);
         setUpBottom(ui);
 
+        messages = new ArrayList<>();
+        adapter = new ChatAdapter(this,messages);
+        udpObject = new UdpObject(adresseName,username,port,adresseMulticast);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setNestedScrollingEnabled(false);
+
+        recepteur = new Recepteur(this,udpObject);
+        recepteur.execute();
     }
 
-    private void fillFakeMessages(){
+    private void fillFakeMessages() {
         listMessage = new ArrayList<Message>();
-        listMessage.add(new Message("Ce message est un test pour recycler view",new User("Jonathan","124.123.123"),false));
-        listMessage.add(new Message("Deuxieme message de Jonathan",new User("Guillaume","123.453.1234"),false));
-        listMessage.add(new Message("Ma reponse a mousieur bouchard",new User("Charles","234.234.216"),true));
+        //listMessage.add(new Message("Ce message est un test pour recycler view",new User("Jonathan","124.123.123"),0));
+        //listMessage.add(new Message("Deuxieme message de Jonathan",new User("Guillaume","123.453.1234"),0));
+        //listMessage.add(new Message("Ma reponse a mousieur bouchard",new User("Charles","234.234.216"),1));
     }
 
     private void setUpHeader(ManualUI ui){
@@ -102,6 +125,7 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         ui.addView(bottomView);
 
         TB_SendMsg = new EditText(this);
+        TB_SendMsg.setFocusable(true);
         TB_SendMsg.setId(R.id.TB_SendMessage);
         TB_SendMsg.setHint("Enter message here...");
         TB_SendMsg.setHintTextColor(Color.parseColor("#000000"));
@@ -109,6 +133,10 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         TB_SendMsg.setAllCaps(false);
         TB_SendMsg.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
         TB_SendMsg.setBackgroundColor(Color.TRANSPARENT);
+        TB_SendMsg.setShowSoftInputOnFocus(true);
+        TB_SendMsg.setFocusableInTouchMode(true);
+        TB_SendMsg.requestFocus();
+        Focus.request(this,TB_SendMsg);
         //TB_SendMsg.getBackground().mutate().setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_ATOP);
         ui.setPosition(TB_SendMsg,ui.rw(15),ui.rh(593),ui.rw(280),ui.rh(45));
         ui.addView(TB_SendMsg);
@@ -144,15 +172,16 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void changeIpFromUsername(){
+    private void changeIpFromUsername() {
         if(isUsername) {
             //Mettre les ips adresse
             isUsername = false;
         }
-        else{
+        else {
             //Mettre les usernames
             isUsername = true;
         }
+        recepteur.setShowIp(!isUsername);
     }
 
     @Override
@@ -162,17 +191,18 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
             changeIpFromUsername();
         }
 
-        if(view.getId() == R.id.BTN_Send){
+        if(view.getId() == R.id.BTN_Send) {
             //Verify characters limits
-            if(TB_SendMsg.getText().toString().length() > 1 || TB_SendMsg.getText().toString().length() < 64){
+            if(TB_SendMsg.getText().toString().length() > 1 || TB_SendMsg.getText().toString().length() < 60){
                 //SEND MESSAGE
                 //EMPTY EditText
                 //Add message in recycler view
+                new Emetteur(this,udpObject,new Message(udpObject.getUsername() + ":" + TB_SendMsg.getText().toString(),new User(udpObject.getUsername(),false),1)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                TB_SendMsg.setText("");
             }
-            else{
-                Toast.makeText(this,"Message mut be beetween 1 and 64 characters",Toast.LENGTH_SHORT).show();
+            else {
+                Toast.makeText(this, "Message mut be between 1 and 60 characters", Toast.LENGTH_SHORT).show();
             }
-
         }
     }
 }
