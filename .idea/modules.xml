@@ -2,11 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
 <<<<<<< Updated upstream
       <module fileurl="file://$PROJECT_DIR$/TP2_Android.iml" filepath="$PROJECT_DIR$/TP2_Android.iml" />
 =======
       <module fileurl="file://$PROJECT_DIR$/TP2Android.iml" filepath="$PROJECT_DIR$/TP2Android.iml" />
 >>>>>>> Stashed changes
+=======
+      <module fileurl="file://$PROJECT_DIR$/TP2Android.iml" filepath="$PROJECT_DIR$/TP2Android.iml" />
+>>>>>>> dev
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
